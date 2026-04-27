@@ -4,245 +4,439 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>代理工具下载站</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
         }
+        
+        /* 科技感背景动画 */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 100, 255, 0.05) 0%, transparent 70%);
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* 头部 */
         .header {
             text-align: center;
-            margin-bottom: 50px;
+            padding: 60px 20px 40px;
+            position: relative;
         }
-        .header h1 {
-            color: #fff;
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #8a2be2, #00ffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
-        .header p {
-            color: #a0a0a0;
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            color: #888;
             font-size: 1.1em;
+            margin-top: 15px;
+            letter-spacing: 3px;
         }
-        .telegram-banner {
-            background: linear-gradient(135deg, #0088cc 0%, #00a0dc 100%);
-            color: white;
-            padding: 15px 30px;
+        
+        .telegram-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #0088cc, #00a0dc);
+            padding: 12px 30px;
             border-radius: 50px;
-            margin-bottom: 50px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,136,204,0.4);
-        }
-        .telegram-banner a {
-            color: white;
+            margin: 30px 0;
             text-decoration: none;
+            color: white;
             font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 136, 204, 0.4);
         }
+        
+        .telegram-bar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 136, 204, 0.6);
+        }
+        
+        /* 平台选择 */
         .section-title {
-            color: #fff;
-            font-size: 1.5em;
-            margin-bottom: 30px;
             text-align: center;
+            font-size: 1.8em;
+            margin: 40px 0;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-family: 'Orbitron', monospace;
         }
+        
         .platform-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 25px;
-            max-width: 900px;
-            width: 100%;
-            margin-bottom: 50px;
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
         }
+        
         .platform-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.9), rgba(30, 30, 60, 0.9));
+            border: 1px solid rgba(0, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 40px 30px;
+            padding: 40px 25px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .platform-card:hover::before {
+            left: 100%;
+        }
+        
         .platform-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255,255,255,0.15);
-            border-color: #667eea;
-            box-shadow: 0 10px 40px rgba(102,126,234,0.3);
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00ffff;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(0, 255, 255, 0.3),
+                inset 0 0 30px rgba(0, 255, 255, 0.1);
         }
+        
         .platform-card .icon {
             font-size: 4em;
             margin-bottom: 15px;
             display: block;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
         }
+        
         .platform-card h3 {
-            color: #fff;
-            font-size: 1.3em;
+            font-size: 1.4em;
             margin-bottom: 8px;
+            color: #fff;
         }
+        
         .platform-card p {
-            color: #a0a0a0;
-            font-size: 0.9em;
-        }
-        .footer {
-            color: #666;
-            text-align: center;
-            margin-top: auto;
-            padding-top: 30px;
-        }
-        .footer a { color: #888; }
-        
-        /* 软件列表页面样式 */
-        .software-page { display: none; max-width: 1200px; width: 100%; }
-        .software-page.active { display: block; }
-        .back-btn {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            margin-bottom: 30px;
-            font-size: 1em;
-            transition: all 0.3s;
-        }
-        .back-btn:hover { background: rgba(255,255,255,0.2); }
-        .software-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-        }
-        .software-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .software-card h3 {
-            color: #fff;
-            font-size: 1.3em;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .software-card .version {
-            font-size: 0.7em;
             color: #888;
-            font-weight: normal;
-        }
-        .software-card .desc {
-            color: #a0a0a0;
-            font-size: 0.95em;
-            margin-bottom: 15px;
-        }
-        .software-card .tutorial {
-            background: rgba(255,200,0,0.1);
-            border-left: 3px solid #ffc800;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 8px 8px 0;
-        }
-        .software-card .tutorial h4 {
-            color: #ffc800;
             font-size: 0.9em;
-            margin-bottom: 10px;
         }
-        .software-card .tutorial ul {
-            color: #ccc;
-            font-size: 0.85em;
-            padding-left: 20px;
-        }
-        .software-card .tutorial li {
-            margin: 5px 0;
-        }
-        .software-card .tutorial a {
-            color: #4da6ff;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .btn-cn {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
-            color: white;
-        }
-        .btn:hover { transform: scale(1.05); }
         
-        /* DNS 防泄露提示 */
-        .dns-warning {
-            background: linear-gradient(135deg, rgba(255,107,107,0.2) 0%, rgba(238,90,90,0.2) 100%);
-            border: 1px solid rgba(255,107,107,0.3);
-            border-radius: 16px;
-            padding: 25px;
-            margin: 30px 0;
-            max-width: 1200px;
-            width: 100%;
+        /* 软件页面 */
+        .software-page {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
         }
+        
+        .software-page.active { display: block; }
+        
+        .back-btn {
+            background: transparent;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 20px 0;
+            transition: all 0.3s;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        /* DNS 警告框 */
+        .dns-warning {
+            background: linear-gradient(135deg, rgba(255, 50, 50, 0.1), rgba(255, 100, 50, 0.1));
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            border-left: 4px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
         .dns-warning h3 {
             color: #ff6b6b;
-            margin-bottom: 15px;
+            font-size: 1.3em;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .dns-warning .content {
+        
+        .dns-warning .step {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 3px solid #00ffff;
+        }
+        
+        .dns-warning .step h4 {
+            color: #00ffff;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .dns-warning .step p, .dns-warning .step li {
             color: #ccc;
             line-height: 1.8;
         }
-        .dns-warning .step {
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-        .dns-warning .step strong {
-            color: #fff;
-        }
+        
         .dns-warning code {
-            background: rgba(0,0,0,0.3);
-            padding: 2px 8px;
-            border-radius: 4px;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 3px 10px;
+            border-radius: 5px;
+            color: #00ffff;
+            font-family: 'Consolas', monospace;
+        }
+        
+        .dns-warning a {
             color: #4da6ff;
+        }
+        
+        /* 软件卡片 */
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+        }
+        
+        @media (max-width: 500px) {
+            .software-grid { grid-template-columns: 1fr; }
+        }
+        
+        .software-card {
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(30, 30, 60, 0.95));
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        
+        .software-card:hover {
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .software-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .software-card .version {
+            font-size: 0.6em;
+            color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        
+        .software-card .desc {
+            color: #aaa;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        
+        /* 教程区域 */
+        .tutorial-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .tutorial-box h4 {
+            color: #ffc800;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tutorial-box ol, .tutorial-box ul {
+            color: #ccc;
+            padding-left: 25px;
+            line-height: 2;
+        }
+        
+        .tutorial-box li {
+            margin: 8px 0;
+        }
+        
+        .tutorial-box li strong {
+            color: #00ffff;
+        }
+        
+        .tutorial-box .tip {
+            background: rgba(0, 255, 255, 0.1);
+            border-left: 3px solid #00ffff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            color: #aaa;
+        }
+        
+        .tutorial-box .warning {
+            background: rgba(255, 200, 0, 0.1);
+            border-left: 3px solid #ffc800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            color: #ffc800;
+        }
+        
+        /* 按钮 */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00ffff, #0088ff);
+            color: #000;
+        }
+        
+        .btn-cn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 50px;
+        }
+        
+        .footer a { color: #00ffff; }
+        
+        /* Windows 版本选择 */
+        .version-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .version-tab {
+            padding: 10px 20px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 25px;
+            color: #00ffff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .version-tab:hover, .version-tab.active {
+            background: rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
         }
     </style>
 </head>
 <body>
+    <div class="bg-animation"></div>
+    
     <!-- 首页 -->
     <div id="home-page">
         <div class="header">
-            <h1>🚀 代理工具下载站</h1>
-            <p>选择您的操作系统，获取最适合的代理软件</p>
+            <h1 class="logo">PROXY TOOLS</h1>
+            <p class="subtitle">安全 · 快速 · 自由 · 选择您的平台开始</p>
+            <a href="https://t.me/ZHaiVPN" target="_blank" class="telegram-bar">
+                📢 Telegram: t.me/ZHaiVPN
+            </a>
         </div>
         
-        <div class="telegram-banner">
-            📢 加入 Telegram 群组：<a href="https://t.me/ZHaiVPN" target="_blank">t.me/ZHaiVPN</a>
-        </div>
-        
-        <h2 class="section-title">选择您的操作系统</h2>
+        <h2 class="section-title">选择操作系统</h2>
         
         <div class="platform-grid">
             <div class="platform-card" onclick="showPlatform('windows')">
                 <span class="icon">🪟</span>
                 <h3>Windows</h3>
-                <p>Windows 7/8/10/11</p>
+                <p>Win 7 / 8 / 10 / 11</p>
             </div>
             <div class="platform-card" onclick="showPlatform('macos')">
                 <span class="icon">🍎</span>
@@ -252,7 +446,7 @@
             <div class="platform-card" onclick="showPlatform('linux')">
                 <span class="icon">🐧</span>
                 <h3>Linux</h3>
-                <p>Ubuntu/Debian/CentOS</p>
+                <p>Ubuntu / Debian / CentOS</p>
             </div>
             <div class="platform-card" onclick="showPlatform('android')">
                 <span class="icon">📱</span>
@@ -262,110 +456,210 @@
         </div>
         
         <div class="footer">
-            <p>📢 Telegram: <a href="https://t.me/ZHaiVPN" target="_blank">t.me/ZHaiVPN</a></p>
+            <p>📢 加入社群：<a href="https://t.me/ZHaiVPN" target="_blank">t.me/ZHaiVPN</a></p>
+            <p style="margin-top:10px;font-size:0.9em;">所有软件均来自官方开源仓库，安全可信</p>
         </div>
     </div>
     
     <!-- Windows 页面 -->
     <div id="windows-page" class="software-page">
-        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <button class="back-btn" onclick="goHome()">← 返回首页</button>
         <h2 class="section-title">🪟 Windows 代理软件</h2>
         
         <div class="dns-warning">
-            <h3>⚠️ 重要：防止 DNS 泄露</h3>
-            <div class="content">
-                <p>DNS 泄露会导致您的真实访问记录被 ISP 记录。请按以下步骤设置：</p>
-                <div class="step">
-                    <strong>方法一：软件内设置（推荐）</strong><br>
-                    在 Clash Verge Rev 中：<br>
-                    设置 → 网络 → 增强模式 → 选择 <code>TUN 模式</code><br>
-                    设置 → DNS → 启用 <code>DNS 防泄露</code>
-                </div>
-                <div class="step">
-                    <strong>方法二：系统 DNS 设置</strong><br>
-                    控制面板 → 网络和共享中心 → 更改适配器设置<br>
-                    右键网络连接 → 属性 → IPv4 → 使用以下 DNS：<br>
-                    首选：<code>8.8.8.8</code> 或 <code>1.1.1.1</code><br>
-                    备用：<code>8.8.4.4</code> 或 <code>1.0.0.1</code>
-                </div>
-                <div class="step">
-                    <strong>验证 DNS 是否泄露</strong><br>
-                    访问 <a href="https://dnsleaktest.com" target="_blank" style="color:#4da6ff;">dnsleaktest.com</a> 进行测试<br>
-                    如果显示的是您真实的 ISP DNS，说明存在泄露！
-                </div>
+            <h3>⚠️ 重要：防止 DNS 泄露（必读）</h3>
+            <p style="color:#ccc;margin-bottom:20px;">DNS 泄露会让您的 ISP 看到您访问的所有域名，即使使用了代理！</p>
+            
+            <div class="step">
+                <h4>方法一：软件内设置（推荐）</h4>
+                <p>大多数现代代理客户端都内置了 DNS 防泄露功能：</p>
+                <ul>
+                    <li><strong>Clash Verge Rev</strong>：设置 → 系统设置 → TUN 模式 → 开启</li>
+                    <li><strong>v2rayN</strong>：设置 → Core:基础设置 → DNS 对象 → 启用防泄露</li>
+                    <li><strong>NekoRay</strong>：设置 → 核心 → 启用 FakeDNS</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h4>方法二：修改系统 DNS</h4>
+                <ol>
+                    <li>打开 <strong>控制面板</strong> → <strong>网络和共享中心</strong></li>
+                    <li>点击当前网络连接 → <strong>属性</strong></li>
+                    <li>选择 <strong>Internet 协议版本 4 (TCP/IPv4)</strong> → <strong>属性</strong></li>
+                    <li>选择 <strong>使用下面的 DNS 服务器地址</strong>：</li>
+                </ol>
+                <p style="margin-top:10px;">
+                    首选 DNS：<code>8.8.8.8</code> 或 <code>1.1.1.1</code><br>
+                    备用 DNS：<code>8.8.4.4</code> 或 <code>1.0.0.1</code>
+                </p>
+            </div>
+            
+            <div class="step">
+                <h4>验证是否泄露</h4>
+                <p>访问 <a href="https://dnsleaktest.com" target="_blank">dnsleaktest.com</a> 进行测试</p>
+                <p style="color:#ff6b6b;margin-top:10px;">⚠️ 如果显示您真实的 ISP 名称和位置，说明存在 DNS 泄露！</p>
             </div>
         </div>
         
         <div class="software-grid">
+            <!-- Clash Verge Rev -->
             <div class="software-card">
                 <h3>⚡ Clash Verge Rev <span class="version">v2.4.7</span></h3>
-                <p class="desc">基于 Clash Meta 内核的现代 GUI 客户端，支持多种协议，界面美观</p>
-                <div class="tutorial">
-                    <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>下载安装后，导入订阅链接</li>
-                        <li>设置 → 网络 → 开启 TUN 模式（防 DNS 泄露）</li>
-                        <li>设置 → DNS → 启用"DNS 防泄露"</li>
-                        <li>选择节点 → 点击"系统代理"即可</li>
-                    </ul>
+                <p class="desc">基于 Clash Meta 内核的现代化 GUI 客户端，使用 Rust + Tauri 开发，性能优异，界面美观，支持 Windows 7/8/10/11 全系统。</p>
+                
+                <div class="tutorial-box">
+                    <h4>📖 详细使用教程</h4>
+                    <ol>
+                        <li><strong>下载安装</strong>：下载 .exe 安装包，双击运行安装</li>
+                        <li><strong>首次启动</strong>：可能会被杀毒软件拦截，选择"允许"即可</li>
+                        <li><strong>导入订阅</strong>：
+                            <ul>
+                                <li>点击左侧"订阅" → "新建"</li>
+                                <li>粘贴订阅链接 → 点击"导入"</li>
+                                <li>点击"刷新"获取节点</li>
+                            </ul>
+                        </li>
+                        <li><strong>开启系统代理</strong>：
+                            <ul>
+                                <li>点击左侧"代理" → 选择节点</li>
+                                <li>点击顶部"系统代理"开关</li>
+                            </ul>
+                        </li>
+                        <li><strong>防止 DNS 泄露（重要！）</strong>：
+                            <ul>
+                                <li>设置 → 系统设置 → <strong>TUN 模式</strong> → 开启</li>
+                                <li>设置 → DNS 设置 → 启用"DNS 增强模式"</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <div class="tip">
+                        💡 <strong>提示</strong>：TUN 模式会创建虚拟网卡，可以接管所有应用的流量，比系统代理更彻底。
+                    </div>
+                    <div class="warning">
+                        ⚠️ <strong>注意</strong>：Windows 7 用户需要先安装 <a href="https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f2556d" target="_blank">Universal C Runtime</a>
+                    </div>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/windows/Clash.Verge_2.4.7_x64-setup.exe" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/windows/Clash.Verge_2.4.7_x64-setup.exe" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/windows/Clash.Verge_2.4.7_x64-setup.exe" class="btn btn-primary">📥 下载 (CDN)</a>
+                    <a href="http://38.207.190.50/windows/Clash.Verge_2.4.7_x64-setup.exe" class="btn btn-cn">🇨🇳 国内下载</a>
                 </div>
             </div>
             
+            <!-- v2rayN -->
             <div class="software-card">
                 <h3>🔧 v2rayN <span class="version">7.20.4</span></h3>
-                <p class="desc">功能强大的 V2Ray 客户端，支持 VMess、VLESS、Trojan 等协议</p>
-                <div class="tutorial">
-                    <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>解压后运行 v2rayN.exe</li>
-                        <li>服务器 → 添加 VMess/VLESS 服务器</li>
-                        <li>设置 → Core: 基础设置 → 开启"DNS 防泄露"</li>
-                        <li>系统代理 → 自动配置系统代理</li>
-                    </ul>
+                <p class="desc">经典的 V2Ray Windows 客户端，支持 VMess、VLESS、Trojan、Shadowsocks 等多种协议，功能丰富，适合进阶用户。</p>
+                
+                <div class="tutorial-box">
+                    <h4>📖 详细使用教程</h4>
+                    <ol>
+                        <li><strong>下载解压</strong>：下载 ZIP 文件，解压到任意目录</li>
+                        <li><strong>运行程序</strong>：双击 <code>v2rayN.exe</code> 启动</li>
+                        <li><strong>添加服务器</strong>：
+                            <ul>
+                                <li>服务器 → 添加 VMess/VLESS 服务器</li>
+                                <li>填入服务器信息（地址、端口、用户ID等）</li>
+                                <li>或扫描屏幕二维码</li>
+                            </ul>
+                        </li>
+                        <li><strong>导入订阅</strong>：
+                            <ul>
+                                <li>订阅分组 → 订阅分组设置</li>
+                                <li>添加 → 粘贴订阅地址</li>
+                                <li>右键订阅 → 更新订阅</li>
+                            </ul>
+                        </li>
+                        <li><strong>防止 DNS 泄露</strong>：
+                            <ul>
+                                <li>设置 → Core: 基础设置</li>
+                                <li>DNS 对象 → 选择"远程DNS"</li>
+                                <li>勾选"启用 DNS 防泄露"</li>
+                            </ul>
+                        </li>
+                        <li><strong>启动代理</strong>：
+                            <ul>
+                                <li>选择服务器 → 回车确认</li>
+                                <li>系统代理 → 自动配置系统代理</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <div class="tip">
+                        💡 <strong>提示</strong>：v2rayN 内置了 Xray 和 v2ray 两个核心，建议使用 Xray 核心（默认），性能更好。
+                    </div>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/windows/v2rayN-7.20.4.zip" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/windows/v2rayN-7.20.4.zip" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/windows/v2rayN-7.20.4.zip" class="btn btn-primary">📥 下载 (CDN)</a>
+                    <a href="http://38.207.190.50/windows/v2rayN-7.20.4.zip" class="btn btn-cn">🇨🇳 国内下载</a>
                 </div>
             </div>
             
+            <!-- NekoRay -->
             <div class="software-card">
                 <h3>🐱 NekoRay <span class="version">4.0.1</span></h3>
-                <p class="desc">跨平台代理客户端，界面简洁，支持多种协议</p>
-                <div class="tutorial">
-                    <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>解压后运行 nekoray.exe</li>
-                        <li>程序 → 首选项 → 核心 → 启用"FakeDNS"</li>
-                        <li>添加节点 → 右键节点 → 设为当前</li>
-                        <li>点击"启动"按钮即可</li>
-                    </ul>
+                <p class="desc">跨平台代理客户端，基于 Qt 开发，界面简洁，支持 Windows/Linux/macOS，适合多平台用户。</p>
+                
+                <div class="tutorial-box">
+                    <h4>📖 详细使用教程</h4>
+                    <ol>
+                        <li><strong>下载解压</strong>：下载 ZIP 文件，解压到英文路径目录</li>
+                        <li><strong>运行程序</strong>：双击 <code>nekoray.exe</code> 启动</li>
+                        <li><strong>添加节点</strong>：
+                            <ul>
+                                <li>程序 → 添加 SOCKS/VMess/VLESS/Trojan</li>
+                                <li>填写服务器信息</li>
+                                <li>或粘贴分享链接</li>
+                            </ul>
+                        </li>
+                        <li><strong>防止 DNS 泄露</strong>：
+                            <ul>
+                                <li>设置 → 核心</li>
+                                <li>勾选"FakeDNS"</li>
+                                <li>DNS 设置 → 使用远程 DNS</li>
+                            </ul>
+                        </li>
+                        <li><strong>启动代理</strong>：
+                            <ul>
+                                <li>右键节点 → "设为当前"</li>
+                                <li>点击主界面的"启动"按钮</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <div class="tip">
+                        💡 <strong>提示</strong>：NekoRay 支持路由规则自定义，可以实现分流（国内直连，国外走代理）。
+                    </div>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/windows/nekoray-4.0.1-windows64.zip" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/windows/nekoray-4.0.1-windows64.zip" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/windows/nekoray-4.0.1-windows64.zip" class="btn btn-primary">📥 下载 (CDN)</a>
+                    <a href="http://38.207.190.50/windows/nekoray-4.0.1-windows64.zip" class="btn btn-cn">🇨🇳 国内下载</a>
                 </div>
             </div>
             
+            <!-- sing-box -->
             <div class="software-card">
                 <h3>📦 sing-box <span class="version">v1.13.11</span></h3>
-                <p class="desc">新一代代理内核，性能优异，需配合 GUI 使用</p>
-                <div class="tutorial">
-                    <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>命令行工具，适合高级用户</li>
-                        <li>需自行编写 JSON 配置文件</li>
-                        <li>配置 dns.rules 防止 DNS 泄露</li>
-                        <li>推荐使用 GUI 客户端：SFM</li>
-                    </ul>
+                <p class="desc">新一代通用代理平台，支持多种协议，性能优异。命令行工具，适合高级用户或配合 GUI 使用。</p>
+                
+                <div class="tutorial-box">
+                    <h4>📖 使用说明</h4>
+                    <ol>
+                        <li>解压得到 <code>sing-box.exe</code></li>
+                        <li>准备 JSON 配置文件 <code>config.json</code></li>
+                        <li>命令行运行：<code>sing-box.exe run -c config.json</code></li>
+                    </ol>
+                    <div class="warning">
+                        ⚠️ <strong>注意</strong>：这是命令行工具，普通用户建议使用上面的 GUI 客户端。
+                    </div>
+                    <div class="tip">
+                        💡 <strong>推荐 GUI</strong>：可以配合 <a href="https://github.com/SagerNet/sing-box-GUI" target="_blank">sing-box GUI</a> 使用
+                    </div>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/windows/sing-box-1.13.11.zip" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/windows/sing-box-1.13.11.zip" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/windows/sing-box-1.13.11.zip" class="btn btn-primary">📥 下载 (CDN)</a>
+                    <a href="http://38.207.190.50/windows/sing-box-1.13.11.zip" class="btn btn-cn">🇨🇳 国内下载</a>
                 </div>
             </div>
         </div>
@@ -373,57 +667,63 @@
     
     <!-- macOS 页面 -->
     <div id="macos-page" class="software-page">
-        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <button class="back-btn" onclick="goHome()">← 返回首页</button>
         <h2 class="section-title">🍎 macOS 代理软件</h2>
         
         <div class="dns-warning">
-            <h3>⚠️ 重要：防止 DNS 泄露</h3>
-            <div class="content">
-                <div class="step">
-                    <strong>方法一：软件内设置</strong><br>
-                    Clash Verge Rev：设置 → 网络 → TUN 模式 → 启用 DNS 防泄露
-                </div>
-                <div class="step">
-                    <strong>方法二：系统 DNS 设置</strong><br>
-                    系统偏好设置 → 网络 → 高级 → DNS<br>
-                    添加：<code>8.8.8.8</code> 和 <code>1.1.1.1</code>
-                </div>
+            <h3>⚠️ macOS DNS 防泄露设置</h3>
+            <div class="step">
+                <h4>系统 DNS 设置</h4>
+                <ol>
+                    <li>打开 <strong>系统偏好设置</strong> → <strong>网络</strong></li>
+                    <li>选择当前网络 → <strong>高级</strong> → <strong>DNS</strong></li>
+                    <li>点击 <strong>+</strong> 添加 DNS 服务器：
+                        <ul>
+                            <li><code>8.8.8.8</code></li>
+                            <li><code>1.1.1.1</code></li>
+                        </ul>
+                    </li>
+                    <li>点击 <strong>好</strong> → <strong>应用</strong></li>
+                </ol>
             </div>
         </div>
         
         <div class="software-grid">
             <div class="software-card">
                 <h3>⚡ Clash Verge Rev <span class="version">v2.4.7</span> (Apple Silicon)</h3>
-                <p class="desc">适用于 M1/M2/M3 芯片 Mac，基于 Clash Meta 内核</p>
-                <div class="tutorial">
-                    <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>打开 dmg 文件，拖拽到 Applications</li>
-                        <li>首次运行需在"系统偏好设置→安全性"中允许</li>
-                        <li>设置 → 网络 → 开启 TUN 模式</li>
-                    </ul>
+                <p class="desc">适用于 M1/M2/M3 芯片 Mac，原生 ARM 架构，性能极佳。</p>
+                
+                <div class="tutorial-box">
+                    <h4>📖 安装教程</h4>
+                    <ol>
+                        <li>下载 .dmg 文件</li>
+                        <li>双击打开，拖拽到 Applications 文件夹</li>
+                        <li>首次运行：系统偏好设置 → 安全性与隐私 → 允许</li>
+                        <li>设置 → TUN 模式 → 开启（防 DNS 泄露）</li>
+                    </ol>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/macos/Clash.Verge_2.4.7_aarch64.dmg" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/macos/Clash.Verge_2.4.7_aarch64.dmg" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/macos/Clash.Verge_2.4.7_aarch64.dmg" class="btn btn-primary">📥 下载 (CDN)</a>
+                    <a href="http://38.207.190.50/macos/Clash.Verge_2.4.7_aarch64.dmg" class="btn btn-cn">🇨🇳 国内下载</a>
                 </div>
             </div>
             
             <div class="software-card">
                 <h3>📦 sing-box <span class="version">v1.13.11</span> (Intel)</h3>
-                <p class="desc">适用于 Intel 芯片 Mac，命令行工具</p>
+                <p class="desc">适用于 Intel 芯片 Mac，命令行工具。</p>
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-amd64.tar.gz" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/macos/sing-box-1.13.11-darwin-amd64.tar.gz" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-amd64.tar.gz" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/macos/sing-box-1.13.11-darwin-amd64.tar.gz" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
             
             <div class="software-card">
                 <h3>📦 sing-box <span class="version">v1.13.11</span> (Apple Silicon)</h3>
-                <p class="desc">适用于 M1/M2/M3 芯片 Mac，命令行工具</p>
+                <p class="desc">适用于 M1/M2/M3 芯片 Mac，命令行工具。</p>
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-arm64.tar.gz" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/macos/sing-box-1.13.11-darwin-arm64.tar.gz" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-arm64.tar.gz" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/macos/sing-box-1.13.11-darwin-arm64.tar.gz" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
         </div>
@@ -431,59 +731,60 @@
     
     <!-- Linux 页面 -->
     <div id="linux-page" class="software-page">
-        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <button class="back-btn" onclick="goHome()">← 返回首页</button>
         <h2 class="section-title">🐧 Linux 代理软件</h2>
         
         <div class="dns-warning">
-            <h3>⚠️ 重要：防止 DNS 泄露</h3>
-            <div class="content">
-                <div class="step">
-                    <strong>修改 /etc/resolv.conf</strong><br>
-                    <code>sudo nano /etc/resolv.conf</code><br>
-                    添加：<code>nameserver 8.8.8.8</code><br>
-                    <code>nameserver 1.1.1.1</code>
-                </div>
-                <div class="step">
-                    <strong>或使用 systemd-resolved</strong><br>
-                    <code>sudo systemctl enable systemd-resolved</code><br>
-                    编辑 /etc/systemd/resolved.conf 设置 DNS
-                </div>
+            <h3>⚠️ Linux DNS 防泄露设置</h3>
+            <div class="step">
+                <h4>修改 /etc/resolv.conf</h4>
+                <p><code>sudo nano /etc/resolv.conf</code></p>
+                <p>添加以下内容：</p>
+                <p><code>nameserver 8.8.8.8</code><br><code>nameserver 1.1.1.1</code></p>
+            </div>
+            <div class="step">
+                <h4>或使用 systemd-resolved</h4>
+                <p><code>sudo systemctl enable --now systemd-resolved</code></p>
+                <p>编辑 <code>/etc/systemd/resolved.conf</code>：</p>
+                <p><code>DNS=8.8.8.8 1.1.1.1</code></p>
             </div>
         </div>
         
         <div class="software-grid">
             <div class="software-card">
                 <h3>🐱 NekoRay <span class="version">4.0.1</span></h3>
-                <p class="desc">AppImage 格式，无需安装，双击运行</p>
-                <div class="tutorial">
+                <p class="desc">AppImage 格式，无需安装，支持所有主流发行版。</p>
+                
+                <div class="tutorial-box">
                     <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>chmod +x nekoray-*.AppImage</li>
-                        <li>./nekoray-*.AppImage 运行</li>
-                        <li>设置 → 启用 FakeDNS 防泄露</li>
-                    </ul>
+                    <ol>
+                        <li><code>chmod +x nekoray-*.AppImage</code></li>
+                        <li><code>./nekoray-*.AppImage</code></li>
+                        <li>设置 → 核心 → 启用 FakeDNS</li>
+                    </ol>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/linux/nekoray-4.0.1-linux-x64.AppImage" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/linux/nekoray-4.0.1-linux-x64.AppImage" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/linux/nekoray-4.0.1-linux-x64.AppImage" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/linux/nekoray-4.0.1-linux-x64.AppImage" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
             
             <div class="software-card">
                 <h3>📦 sing-box <span class="version">v1.13.11</span> (x64)</h3>
-                <p class="desc">适用于 x86_64 架构</p>
+                <p class="desc">适用于 x86_64 架构 Linux。</p>
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-amd64.tar.gz" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/linux/sing-box-1.13.11-linux-amd64.tar.gz" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-amd64.tar.gz" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/linux/sing-box-1.13.11-linux-amd64.tar.gz" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
             
             <div class="software-card">
                 <h3>📦 sing-box <span class="version">v1.13.11</span> (ARM64)</h3>
-                <p class="desc">适用于 ARM64 架构</p>
+                <p class="desc">适用于 ARM64 架构 Linux（树莓派等）。</p>
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-arm64.tar.gz" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/linux/sing-box-1.13.11-linux-arm64.tar.gz" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-arm64.tar.gz" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/linux/sing-box-1.13.11-linux-arm64.tar.gz" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
         </div>
@@ -491,67 +792,77 @@
     
     <!-- Android 页面 -->
     <div id="android-page" class="software-page">
-        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <button class="back-btn" onclick="goHome()">← 返回首页</button>
         <h2 class="section-title">📱 Android 代理软件</h2>
         
         <div class="dns-warning">
-            <h3>⚠️ 重要：防止 DNS 泄露</h3>
-            <div class="content">
-                <div class="step">
-                    <strong>Clash Meta 设置</strong><br>
-                    设置 → 网络 → 开启"增强模式"<br>
-                    设置 → DNS → 启用"DNS 防泄露"
-                </div>
-                <div class="step">
-                    <strong>v2rayNG 设置</strong><br>
-                    设置 → DNS 设置 → 使用远程 DNS<br>
-                    设置 → 路由设置 → 域名策略 → AsIs
-                </div>
+            <h3>⚠️ Android DNS 防泄露设置</h3>
+            <div class="step">
+                <h4>Clash Meta 设置</h4>
+                <ol>
+                    <li>设置 → 网络 → 开启"增强模式"</li>
+                    <li>设置 → DNS → 启用"DNS 防泄露"</li>
+                </ol>
+            </div>
+            <div class="step">
+                <h4>v2rayNG 设置</h4>
+                <ol>
+                    <li>设置 → DNS 设置 → 使用远程 DNS</li>
+                    <li>设置 → 路由设置 → 域名策略 → AsIs</li>
+                </ol>
             </div>
         </div>
         
         <div class="software-grid">
             <div class="software-card">
                 <h3>⚡ Clash Meta <span class="version">v2.11.27</span></h3>
-                <p class="desc">基于 Clash Meta 内核，功能强大</p>
-                <div class="tutorial">
+                <p class="desc">基于 Clash Meta 内核，功能强大，支持多种协议。</p>
+                
+                <div class="tutorial-box">
                     <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>安装 APK，添加订阅</li>
-                        <li>设置 → 网络 → 增强模式</li>
-                        <li>设置 → DNS → DNS 防泄露</li>
-                        <li>选择节点 → 启动代理</li>
-                    </ul>
+                    <ol>
+                        <li>安装 APK，打开应用</li>
+                        <li>点击右上角 "+" → 添加订阅</li>
+                        <li>粘贴订阅链接 → 保存 → 更新</li>
+                        <li>设置 → 网络 → 增强模式 → 开启</li>
+                        <li>设置 → DNS → DNS 防泄露 → 开启</li>
+                        <li>选择节点 → 点击"启动"</li>
+                    </ol>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/android/cmfa-2.11.27-arm64.apk" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/android/cmfa-2.11.27-arm64.apk" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/android/cmfa-2.11.27-arm64.apk" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/android/cmfa-2.11.27-arm64.apk" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
             
             <div class="software-card">
                 <h3>🔧 v2rayNG <span class="version">2.0.18</span></h3>
-                <p class="desc">Android 平台经典 V2Ray 客户端</p>
-                <div class="tutorial">
+                <p class="desc">Android 经典 V2Ray 客户端，简单易用。</p>
+                
+                <div class="tutorial-box">
                     <h4>📖 使用教程</h4>
-                    <ul>
-                        <li>安装 APK，添加服务器配置</li>
+                    <ol>
+                        <li>安装 APK</li>
+                        <li>点击右上角 "+" → 从剪贴板导入</li>
+                        <li>或扫描二维码导入</li>
                         <li>设置 → DNS → 使用远程 DNS</li>
-                        <li>点击右下角按钮启动</li>
-                    </ul>
+                        <li>点击右下角纸飞机图标启动</li>
+                    </ol>
                 </div>
+                
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/android/v2rayNG-2.0.18-arm64.apk" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/android/v2rayNG-2.0.18-arm64.apk" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/android/v2rayNG-2.0.18-arm64.apk" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/android/v2rayNG-2.0.18-arm64.apk" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
             
             <div class="software-card">
                 <h3>📦 Sing-box <span class="version">v1.13.11</span></h3>
-                <p class="desc">通用版本，支持所有架构</p>
+                <p class="desc">通用版本，支持所有 Android 设备。</p>
                 <div class="btn-group">
-                    <a href="https://mg1.dzone.us.ci/android/SFA-1.13.11-universal.apk" class="btn btn-primary">下载</a>
-                    <a href="http://38.207.190.50/android/SFA-1.13.11-universal.apk" class="btn btn-cn">国内下载</a>
+                    <a href="https://mg1.dzone.us.ci/android/SFA-1.13.11-universal.apk" class="btn btn-primary">📥 下载</a>
+                    <a href="http://38.207.190.50/android/SFA-1.13.11-universal.apk" class="btn btn-cn">🇨🇳 国内</a>
                 </div>
             </div>
         </div>
