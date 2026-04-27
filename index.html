@@ -5,209 +5,570 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>代理工具下载站</title>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
         }
-        .container { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        h1 { color: #333; text-align: center; margin-bottom: 10px; }
-        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
-        .telegram-banner { 
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header h1 {
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .header p {
+            color: #a0a0a0;
+            font-size: 1.1em;
+        }
+        .telegram-banner {
             background: linear-gradient(135deg, #0088cc 0%, #00a0dc 100%);
             color: white;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 15px 30px;
+            border-radius: 50px;
+            margin-bottom: 50px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0,136,204,0.4);
+        }
+        .telegram-banner a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .section-title {
+            color: #fff;
+            font-size: 1.5em;
             margin-bottom: 30px;
+            text-align: center;
         }
-        .telegram-banner h3 { margin: 0 0 10px 0; font-size: 1.2em; }
-        .telegram-banner a { 
-            color: white; 
-            font-weight: bold; 
-            font-size: 1.1em;
-            text-decoration: underline;
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 50px;
         }
-        .telegram-banner a:hover { text-decoration: none; }
-        .platform { margin: 30px 0; }
-        .platform-header { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            padding: 15px 20px; 
+        .platform-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .platform-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+            border-color: #667eea;
+            box-shadow: 0 10px 40px rgba(102,126,234,0.3);
+        }
+        .platform-card .icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .platform-card h3 {
+            color: #fff;
+            font-size: 1.3em;
+            margin-bottom: 8px;
+        }
+        .platform-card p {
+            color: #a0a0a0;
+            font-size: 0.9em;
+        }
+        .footer {
+            color: #666;
+            text-align: center;
+            margin-top: auto;
+            padding-top: 30px;
+        }
+        .footer a { color: #888; }
+        
+        /* 软件列表页面样式 */
+        .software-page { display: none; max-width: 1200px; width: 100%; }
+        .software-page.active { display: block; }
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.2); }
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .software-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .software-card h3 {
+            color: #fff;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .software-card .version {
+            font-size: 0.7em;
+            color: #888;
+            font-weight: normal;
+        }
+        .software-card .desc {
+            color: #a0a0a0;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        .software-card .tutorial {
+            background: rgba(255,200,0,0.1);
+            border-left: 3px solid #ffc800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .software-card .tutorial h4 {
+            color: #ffc800;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .software-card .tutorial ul {
+            color: #ccc;
+            font-size: 0.85em;
+            padding-left: 20px;
+        }
+        .software-card .tutorial li {
+            margin: 5px 0;
+        }
+        .software-card .tutorial a {
+            color: #4da6ff;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-radius: 10px;
-            margin-bottom: 20px;
         }
-        .platform-header h2 { margin: 0; font-size: 1.3em; }
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .tool { 
-            background: #f8f9fa; 
-            border-radius: 12px; 
-            padding: 20px; 
-            border: 1px solid #e9ecef;
-            transition: transform 0.2s, box-shadow 0.2s;
+        .btn-cn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white;
         }
-        .tool:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .tool h3 { margin: 0 0 10px 0; color: #333; display: flex; align-items: center; gap: 8px; }
-        .tool .version { font-size: 0.8em; color: #888; font-weight: normal; }
-        .tool .desc { color: #666; font-size: 14px; margin: 10px 0; }
-        .tool .size { color: #999; font-size: 12px; }
-        .tool a { 
-            display: inline-block; 
-            margin-top: 15px; 
-            padding: 8px 20px; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; 
-            text-decoration: none; 
-            border-radius: 6px;
-            font-size: 14px;
+        .btn:hover { transform: scale(1.05); }
+        
+        /* DNS 防泄露提示 */
+        .dns-warning {
+            background: linear-gradient(135deg, rgba(255,107,107,0.2) 0%, rgba(238,90,90,0.2) 100%);
+            border: 1px solid rgba(255,107,107,0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 30px 0;
+            max-width: 1200px;
+            width: 100%;
         }
-        .tool a:hover { opacity: 0.9; }
-        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #888; }
-        .icon { font-size: 1.5em; }
+        .dns-warning h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dns-warning .content {
+            color: #ccc;
+            line-height: 1.8;
+        }
+        .dns-warning .step {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .dns-warning .step strong {
+            color: #fff;
+        }
+        .dns-warning code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #4da6ff;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 代理工具下载站</h1>
-        <p class="subtitle">精选主流代理客户端，持续更新</p>
+    <!-- 首页 -->
+    <div id="home-page">
+        <div class="header">
+            <h1>🚀 代理工具下载站</h1>
+            <p>选择您的操作系统，获取最适合的代理软件</p>
+        </div>
         
-        <!-- Telegram Banner -->
         <div class="telegram-banner">
-            <h3>📢 加入 Telegram 群组获取最新资讯</h3>
-            <p>
-                <a href="https://t.me/ZHaiVPN" target="_blank">🔗 t.me/ZHaiVPN</a>
-            </p>
+            📢 加入 Telegram 群组：<a href="https://t.me/ZHaiVPN" target="_blank">t.me/ZHaiVPN</a>
         </div>
         
-        <!-- Windows -->
-        <div class="platform">
-            <div class="platform-header">
+        <h2 class="section-title">选择您的操作系统</h2>
+        
+        <div class="platform-grid">
+            <div class="platform-card" onclick="showPlatform('windows')">
                 <span class="icon">🪟</span>
-                <h2>Windows</h2>
+                <h3>Windows</h3>
+                <p>Windows 7/8/10/11</p>
             </div>
-            <div class="tool-grid">
-                <div class="tool">
-                    <h3>Clash Verge Rev <span class="version">v2.4.7</span></h3>
-                    <p class="desc">基于 Clash Meta 内核的 GUI 客户端，支持多种协议</p>
-                    <p class="size">37 MB</p>
-                    <a href="https://mg1.dzone.us.ci/windows/Clash.Verge_2.4.7_x64-setup.exe">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>v2rayN <span class="version">7.20.4</span></h3>
-                    <p class="desc">功能强大的 V2Ray 客户端，支持 VMess、VLESS 等协议</p>
-                    <p class="size">144 MB</p>
-                    <a href="https://mg1.dzone.us.ci/windows/v2rayN-7.20.4.zip">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>NekoRay <span class="version">4.0.1</span></h3>
-                    <p class="desc">跨平台代理客户端，支持多种协议</p>
-                    <p class="size">40 MB</p>
-                    <a href="https://mg1.dzone.us.ci/windows/nekoray-4.0.1-windows64.zip">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>sing-box <span class="version">v1.13.11</span></h3>
-                    <p class="desc">新一代代理内核，支持多种协议</p>
-                    <p class="size">20 MB</p>
-                    <a href="https://mg1.dzone.us.ci/windows/sing-box-1.13.11.zip">下载</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- macOS -->
-        <div class="platform">
-            <div class="platform-header">
+            <div class="platform-card" onclick="showPlatform('macos')">
                 <span class="icon">🍎</span>
-                <h2>macOS</h2>
+                <h3>macOS</h3>
+                <p>Intel / Apple Silicon</p>
             </div>
-            <div class="tool-grid">
-                <div class="tool">
-                    <h3>Clash Verge Rev <span class="version">v2.4.7</span> (Apple Silicon)</h3>
-                    <p class="desc">适用于 M1/M2/M3 芯片的 Mac</p>
-                    <p class="size">48 MB</p>
-                    <a href="https://mg1.dzone.us.ci/macos/Clash.Verge_2.4.7_aarch64.dmg">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>sing-box <span class="version">v1.13.11</span> (Intel)</h3>
-                    <p class="desc">适用于 Intel 芯片的 Mac</p>
-                    <p class="size">20 MB</p>
-                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-amd64.tar.gz">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>sing-box <span class="version">v1.13.11</span> (Apple Silicon)</h3>
-                    <p class="desc">适用于 M1/M2/M3 芯片的 Mac</p>
-                    <p class="size">18 MB</p>
-                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-arm64.tar.gz">下载</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Linux -->
-        <div class="platform">
-            <div class="platform-header">
+            <div class="platform-card" onclick="showPlatform('linux')">
                 <span class="icon">🐧</span>
-                <h2>Linux</h2>
+                <h3>Linux</h3>
+                <p>Ubuntu/Debian/CentOS</p>
             </div>
-            <div class="tool-grid">
-                <div class="tool">
-                    <h3>NekoRay <span class="version">4.0.1</span></h3>
-                    <p class="desc">AppImage 格式，无需安装</p>
-                    <p class="size">43 MB</p>
-                    <a href="https://mg1.dzone.us.ci/linux/nekoray-4.0.1-linux-x64.AppImage">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>sing-box <span class="version">v1.13.11</span> (x64)</h3>
-                    <p class="desc">适用于 x86_64 架构</p>
-                    <p class="size">23 MB</p>
-                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-amd64.tar.gz">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>sing-box <span class="version">v1.13.11</span> (ARM64)</h3>
-                    <p class="desc">适用于 ARM64 架构</p>
-                    <p class="size">21 MB</p>
-                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-arm64.tar.gz">下载</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Android -->
-        <div class="platform">
-            <div class="platform-header">
+            <div class="platform-card" onclick="showPlatform('android')">
                 <span class="icon">📱</span>
-                <h2>Android</h2>
-            </div>
-            <div class="tool-grid">
-                <div class="tool">
-                    <h3>Clash Meta for Android <span class="version">v2.11.27</span></h3>
-                    <p class="desc">基于 Clash Meta 内核的 Android 客户端</p>
-                    <p class="size">30 MB</p>
-                    <a href="https://mg1.dzone.us.ci/android/cmfa-2.11.27-arm64.apk">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>v2rayNG <span class="version">2.0.18</span></h3>
-                    <p class="desc">Android 平台 V2Ray 客户端</p>
-                    <p class="size">27 MB</p>
-                    <a href="https://mg1.dzone.us.ci/android/v2rayNG-2.0.18-arm64.apk">下载</a>
-                </div>
-                <div class="tool">
-                    <h3>Sing-box for Android <span class="version">v1.13.11</span></h3>
-                    <p class="desc">通用版本，支持所有架构</p>
-                    <p class="size">74 MB</p>
-                    <a href="https://mg1.dzone.us.ci/android/SFA-1.13.11-universal.apk">下载</a>
-                </div>
+                <h3>Android</h3>
+                <p>Android 5.0+</p>
             </div>
         </div>
         
         <div class="footer">
-            <p>📢 Telegram: <a href="https://t.me/ZHaiVPN" target="_blank" style="color:#0088cc;">t.me/ZHaiVPN</a></p>
-            <p>最后更新: 2026-04-28 | 所有软件均来自官方 GitHub 仓库</p>
+            <p>📢 Telegram: <a href="https://t.me/ZHaiVPN" target="_blank">t.me/ZHaiVPN</a></p>
         </div>
     </div>
+    
+    <!-- Windows 页面 -->
+    <div id="windows-page" class="software-page">
+        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <h2 class="section-title">🪟 Windows 代理软件</h2>
+        
+        <div class="dns-warning">
+            <h3>⚠️ 重要：防止 DNS 泄露</h3>
+            <div class="content">
+                <p>DNS 泄露会导致您的真实访问记录被 ISP 记录。请按以下步骤设置：</p>
+                <div class="step">
+                    <strong>方法一：软件内设置（推荐）</strong><br>
+                    在 Clash Verge Rev 中：<br>
+                    设置 → 网络 → 增强模式 → 选择 <code>TUN 模式</code><br>
+                    设置 → DNS → 启用 <code>DNS 防泄露</code>
+                </div>
+                <div class="step">
+                    <strong>方法二：系统 DNS 设置</strong><br>
+                    控制面板 → 网络和共享中心 → 更改适配器设置<br>
+                    右键网络连接 → 属性 → IPv4 → 使用以下 DNS：<br>
+                    首选：<code>8.8.8.8</code> 或 <code>1.1.1.1</code><br>
+                    备用：<code>8.8.4.4</code> 或 <code>1.0.0.1</code>
+                </div>
+                <div class="step">
+                    <strong>验证 DNS 是否泄露</strong><br>
+                    访问 <a href="https://dnsleaktest.com" target="_blank" style="color:#4da6ff;">dnsleaktest.com</a> 进行测试<br>
+                    如果显示的是您真实的 ISP DNS，说明存在泄露！
+                </div>
+            </div>
+        </div>
+        
+        <div class="software-grid">
+            <div class="software-card">
+                <h3>⚡ Clash Verge Rev <span class="version">v2.4.7</span></h3>
+                <p class="desc">基于 Clash Meta 内核的现代 GUI 客户端，支持多种协议，界面美观</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>下载安装后，导入订阅链接</li>
+                        <li>设置 → 网络 → 开启 TUN 模式（防 DNS 泄露）</li>
+                        <li>设置 → DNS → 启用"DNS 防泄露"</li>
+                        <li>选择节点 → 点击"系统代理"即可</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/windows/Clash.Verge_2.4.7_x64-setup.exe" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/windows/Clash.Verge_2.4.7_x64-setup.exe" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>🔧 v2rayN <span class="version">7.20.4</span></h3>
+                <p class="desc">功能强大的 V2Ray 客户端，支持 VMess、VLESS、Trojan 等协议</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>解压后运行 v2rayN.exe</li>
+                        <li>服务器 → 添加 VMess/VLESS 服务器</li>
+                        <li>设置 → Core: 基础设置 → 开启"DNS 防泄露"</li>
+                        <li>系统代理 → 自动配置系统代理</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/windows/v2rayN-7.20.4.zip" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/windows/v2rayN-7.20.4.zip" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>🐱 NekoRay <span class="version">4.0.1</span></h3>
+                <p class="desc">跨平台代理客户端，界面简洁，支持多种协议</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>解压后运行 nekoray.exe</li>
+                        <li>程序 → 首选项 → 核心 → 启用"FakeDNS"</li>
+                        <li>添加节点 → 右键节点 → 设为当前</li>
+                        <li>点击"启动"按钮即可</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/windows/nekoray-4.0.1-windows64.zip" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/windows/nekoray-4.0.1-windows64.zip" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>📦 sing-box <span class="version">v1.13.11</span></h3>
+                <p class="desc">新一代代理内核，性能优异，需配合 GUI 使用</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>命令行工具，适合高级用户</li>
+                        <li>需自行编写 JSON 配置文件</li>
+                        <li>配置 dns.rules 防止 DNS 泄露</li>
+                        <li>推荐使用 GUI 客户端：SFM</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/windows/sing-box-1.13.11.zip" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/windows/sing-box-1.13.11.zip" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- macOS 页面 -->
+    <div id="macos-page" class="software-page">
+        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <h2 class="section-title">🍎 macOS 代理软件</h2>
+        
+        <div class="dns-warning">
+            <h3>⚠️ 重要：防止 DNS 泄露</h3>
+            <div class="content">
+                <div class="step">
+                    <strong>方法一：软件内设置</strong><br>
+                    Clash Verge Rev：设置 → 网络 → TUN 模式 → 启用 DNS 防泄露
+                </div>
+                <div class="step">
+                    <strong>方法二：系统 DNS 设置</strong><br>
+                    系统偏好设置 → 网络 → 高级 → DNS<br>
+                    添加：<code>8.8.8.8</code> 和 <code>1.1.1.1</code>
+                </div>
+            </div>
+        </div>
+        
+        <div class="software-grid">
+            <div class="software-card">
+                <h3>⚡ Clash Verge Rev <span class="version">v2.4.7</span> (Apple Silicon)</h3>
+                <p class="desc">适用于 M1/M2/M3 芯片 Mac，基于 Clash Meta 内核</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>打开 dmg 文件，拖拽到 Applications</li>
+                        <li>首次运行需在"系统偏好设置→安全性"中允许</li>
+                        <li>设置 → 网络 → 开启 TUN 模式</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/macos/Clash.Verge_2.4.7_aarch64.dmg" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/macos/Clash.Verge_2.4.7_aarch64.dmg" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>📦 sing-box <span class="version">v1.13.11</span> (Intel)</h3>
+                <p class="desc">适用于 Intel 芯片 Mac，命令行工具</p>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-amd64.tar.gz" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/macos/sing-box-1.13.11-darwin-amd64.tar.gz" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>📦 sing-box <span class="version">v1.13.11</span> (Apple Silicon)</h3>
+                <p class="desc">适用于 M1/M2/M3 芯片 Mac，命令行工具</p>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/macos/sing-box-1.13.11-darwin-arm64.tar.gz" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/macos/sing-box-1.13.11-darwin-arm64.tar.gz" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Linux 页面 -->
+    <div id="linux-page" class="software-page">
+        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <h2 class="section-title">🐧 Linux 代理软件</h2>
+        
+        <div class="dns-warning">
+            <h3>⚠️ 重要：防止 DNS 泄露</h3>
+            <div class="content">
+                <div class="step">
+                    <strong>修改 /etc/resolv.conf</strong><br>
+                    <code>sudo nano /etc/resolv.conf</code><br>
+                    添加：<code>nameserver 8.8.8.8</code><br>
+                    <code>nameserver 1.1.1.1</code>
+                </div>
+                <div class="step">
+                    <strong>或使用 systemd-resolved</strong><br>
+                    <code>sudo systemctl enable systemd-resolved</code><br>
+                    编辑 /etc/systemd/resolved.conf 设置 DNS
+                </div>
+            </div>
+        </div>
+        
+        <div class="software-grid">
+            <div class="software-card">
+                <h3>🐱 NekoRay <span class="version">4.0.1</span></h3>
+                <p class="desc">AppImage 格式，无需安装，双击运行</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>chmod +x nekoray-*.AppImage</li>
+                        <li>./nekoray-*.AppImage 运行</li>
+                        <li>设置 → 启用 FakeDNS 防泄露</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/linux/nekoray-4.0.1-linux-x64.AppImage" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/linux/nekoray-4.0.1-linux-x64.AppImage" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>📦 sing-box <span class="version">v1.13.11</span> (x64)</h3>
+                <p class="desc">适用于 x86_64 架构</p>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-amd64.tar.gz" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/linux/sing-box-1.13.11-linux-amd64.tar.gz" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>📦 sing-box <span class="version">v1.13.11</span> (ARM64)</h3>
+                <p class="desc">适用于 ARM64 架构</p>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/linux/sing-box-1.13.11-linux-arm64.tar.gz" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/linux/sing-box-1.13.11-linux-arm64.tar.gz" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Android 页面 -->
+    <div id="android-page" class="software-page">
+        <button class="back-btn" onclick="goHome()">← 返回选择系统</button>
+        <h2 class="section-title">📱 Android 代理软件</h2>
+        
+        <div class="dns-warning">
+            <h3>⚠️ 重要：防止 DNS 泄露</h3>
+            <div class="content">
+                <div class="step">
+                    <strong>Clash Meta 设置</strong><br>
+                    设置 → 网络 → 开启"增强模式"<br>
+                    设置 → DNS → 启用"DNS 防泄露"
+                </div>
+                <div class="step">
+                    <strong>v2rayNG 设置</strong><br>
+                    设置 → DNS 设置 → 使用远程 DNS<br>
+                    设置 → 路由设置 → 域名策略 → AsIs
+                </div>
+            </div>
+        </div>
+        
+        <div class="software-grid">
+            <div class="software-card">
+                <h3>⚡ Clash Meta <span class="version">v2.11.27</span></h3>
+                <p class="desc">基于 Clash Meta 内核，功能强大</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>安装 APK，添加订阅</li>
+                        <li>设置 → 网络 → 增强模式</li>
+                        <li>设置 → DNS → DNS 防泄露</li>
+                        <li>选择节点 → 启动代理</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/android/cmfa-2.11.27-arm64.apk" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/android/cmfa-2.11.27-arm64.apk" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>🔧 v2rayNG <span class="version">2.0.18</span></h3>
+                <p class="desc">Android 平台经典 V2Ray 客户端</p>
+                <div class="tutorial">
+                    <h4>📖 使用教程</h4>
+                    <ul>
+                        <li>安装 APK，添加服务器配置</li>
+                        <li>设置 → DNS → 使用远程 DNS</li>
+                        <li>点击右下角按钮启动</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/android/v2rayNG-2.0.18-arm64.apk" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/android/v2rayNG-2.0.18-arm64.apk" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+            
+            <div class="software-card">
+                <h3>📦 Sing-box <span class="version">v1.13.11</span></h3>
+                <p class="desc">通用版本，支持所有架构</p>
+                <div class="btn-group">
+                    <a href="https://mg1.dzone.us.ci/android/SFA-1.13.11-universal.apk" class="btn btn-primary">下载</a>
+                    <a href="http://38.207.190.50/android/SFA-1.13.11-universal.apk" class="btn btn-cn">国内下载</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showPlatform(platform) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById(platform + '-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        
+        function goHome() {
+            document.querySelectorAll('.software-page').forEach(p => p.classList.remove('active'));
+            document.getElementById('home-page').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
 </body>
 </html>
